@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" scaleShape="false" style="-fx-background-color: D9D9D9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutY="14.0" prefHeight="46.0" prefWidth="600.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Placas do João!" textAlignment="CENTER" wrappingWidth="599.7367248773571">
+               <font>
+                  <Font name="Consolas" size="56.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox layoutY="117.0" prefHeight="166.0" prefWidth="600.0" spacing="60.0">
+         <children>
+            <Pane prefHeight="162.0" prefWidth="202.0" style="-fx-background-color: GREY; -fx-border-radius: 20 20 20 20; -fx-background-radius: 20 20 20 20;">
+               <children>
+                  <Text fill="WHITE" fontSmoothingType="LCD" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" textAlignment="CENTER" wrappingWidth="199.9999999999999">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="69.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/icone_clientes.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="146.0" prefWidth="200.0" style="-fx-background-color: GREY; -fx-border-radius: 20 20 20 20; -fx-background-radius: 20 20 20 20;">
+               <children>
+                  <Text fill="WHITE" fontSmoothingType="LCD" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Encomendas" textAlignment="CENTER" wrappingWidth="199.9999999999999">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="68.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/icone_encomendas.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+         <padding>
+            <Insets left="70.0" />
+         </padding>
+      </HBox>
+      <HBox layoutY="355.0" prefHeight="29.0" prefWidth="600.0" />
+      <Text layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Placas da melhor qualidade" textAlignment="CENTER" wrappingWidth="599.7367248773571">
+         <font>
+            <Font name="Consolas" size="30.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>
