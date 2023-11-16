@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS Cliente
+(
+    Id SERIAL PRIMARY KEY,
+    CpfCnpj VARCHAR(14) NOT NULL,
+    Nome VARCHAR(100) DEFAULT 'Sem Nome',
+    Telefone VARCHAR(14)
+);;
