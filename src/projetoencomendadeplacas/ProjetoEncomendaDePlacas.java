@@ -20,7 +20,7 @@ public class ProjetoEncomendaDePlacas extends Application {
         db.createDb();
         db.createClienteSchema();
         db.createEncomendaSchema();
-        FXMLLoader loader = new FXMLLoader(ProjetoEncomendaDePlacas.class.getResource("Screens/clienteScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(ProjetoEncomendaDePlacas.class.getResource("Screens/mainScreen.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Encomenda De Placas");
         stage.setScene(scene);

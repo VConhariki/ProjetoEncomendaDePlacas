@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import projetoencomendadeplacas.DTOs.ClienteTableViewDTO;
 
 public class ClienteScreenController implements Initializable {
@@ -26,6 +27,8 @@ public class ClienteScreenController implements Initializable {
     private Button ClienteExcluirButton;
     @FXML
     private TableView<ClienteTableViewDTO> ClienteTableView;
+    @FXML
+    private Pane clienteScreen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
