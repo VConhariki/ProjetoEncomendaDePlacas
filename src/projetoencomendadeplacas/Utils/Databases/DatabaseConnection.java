@@ -51,6 +51,16 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+    
+    public void createClienteEncomendaSchema(){
+        try{
+            Scanner scanner = obterScript(BASEPATH + "CreateClienteEncomendaSchema.sql");
+            assert scanner != null;
+            rodarScript(scanner);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     //region Private Methods
     private Statement createStatement(){

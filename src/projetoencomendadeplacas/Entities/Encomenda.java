@@ -6,8 +6,10 @@ package projetoencomendadeplacas.Entities;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +42,9 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Encomenda.findByFormapagamento", query = "SELECT e FROM Encomenda e WHERE e.formapagamento = :formapagamento"),
     @NamedQuery(name = "Encomenda.findByPagamentopendente", query = "SELECT e FROM Encomenda e WHERE e.pagamentopendente = :pagamentopendente")})
 public class Encomenda implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idencomenda")
+    private Collection<Clienteencomenda> clienteencomendaCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -197,6 +203,14 @@ public class Encomenda implements Serializable {
     @Override
     public String toString() {
         return "projetoencomendadeplacas.Entities.Encomenda[ id=" + id + " ]";
+    }
+
+    public Collection<Clienteencomenda> getClienteencomendaCollection() {
+        return clienteencomendaCollection;
+    }
+
+    public void setClienteencomendaCollection(Collection<Clienteencomenda> clienteencomendaCollection) {
+        this.clienteencomendaCollection = clienteencomendaCollection;
     }
     
 }

@@ -9,17 +9,13 @@ import java.io.IOException;
 
 public class ProjetoEncomendaDePlacas extends Application {
 
-
     public ProjetoEncomendaDePlacas() {
-
+        Database db = new Database();
+        db.createDatabase();
     }
     
     @Override
     public void start(Stage stage) throws IOException {
-        Database db = new Database();
-        db.createDb();
-        db.createClienteSchema();
-        db.createEncomendaSchema();
         FXMLLoader loader = new FXMLLoader(ProjetoEncomendaDePlacas.class.getResource("Screens/mainScreen.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Encomenda De Placas");

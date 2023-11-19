@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>projetoencomendadeplacas.Entities.Cliente</class>
     <class>projetoencomendadeplacas.Entities.Encomenda</class>
+    <class>projetoencomendadeplacas.Entities.Clienteencomenda</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/encomendaplacadb"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
