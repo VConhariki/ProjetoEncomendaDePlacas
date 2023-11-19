@@ -1,6 +1,7 @@
-package projetoencomendadeplacas.Utils;
+package projetoencomendadeplacas.Utils.Databases;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,41 +19,41 @@ public class DatabaseConnection {
     private static final String BASEPATH = "src/projetoencomendadeplacas/Utils/Scripts/";
 
     public DatabaseConnection(){
-        SESSAO = CreateStatement();
+        SESSAO = createStatement();
     }
 
-    public void CreateDb(){
+    public void createDb(){
         try{
-            Scanner scanner = ObterScript(BASEPATH + "CreateDatabase.sql");
+            Scanner scanner = obterScript(BASEPATH + "CreateDatabase.sql");
             assert scanner != null;
-            RodarScript(scanner);
+            rodarScript(scanner);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void CreateClienteSchema(){
+    public void createClienteSchema(){
         try{
-            Scanner scanner = ObterScript(BASEPATH + "CreateClienteSchema.sql");
+            Scanner scanner = obterScript(BASEPATH + "CreateClienteSchema.sql");
             assert scanner != null;
-            RodarScript(scanner);
+            rodarScript(scanner);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void CreateEncomendaSchema(){
+    public void createEncomendaSchema(){
         try{
-            Scanner scanner = ObterScript(BASEPATH + "CreateEncomendaSchema.sql");
+            Scanner scanner = obterScript(BASEPATH + "CreateEncomendaSchema.sql");
             assert scanner != null;
-            RodarScript(scanner);
+            rodarScript(scanner);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     //region Private Methods
-    private Statement CreateStatement(){
+    private Statement createStatement(){
         try{
             Class.forName(DRIVER);
             Connection conexao = DriverManager.getConnection(URL+DATABASE,USER, SENHA);
@@ -63,19 +64,19 @@ public class DatabaseConnection {
         return null;
     }
 
-    private Scanner ObterScript(String path) {
+    private Scanner obterScript(String path) {
         try{
             File file = new File(path);
             Scanner scanner;
             scanner = new Scanner(file).useDelimiter(DELIMITER);
             return scanner;
-        }catch (Exception ex){
+        }catch (FileNotFoundException ex){
             ex.printStackTrace();
         }
         return null;
     }
 
-    private void RodarScript(Scanner scanner){
+    private void rodarScript(Scanner scanner){
         while(scanner.hasNext()) {
             String rawStatement = scanner.next() + DELIMITER;
             System.out.println(rawStatement);
