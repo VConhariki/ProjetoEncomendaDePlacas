@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/Screens/MainScreenController.java</file>
+            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/Entities/Cliente.java</file>
+            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/Utils/JPAUtils.java</file>
+            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/DAOs/IDAO.java</file>
+            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/DAOs/ClienteDAO.java</file>
             <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/Screens/ClienteScreenController.java</file>
             <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/ProjetoEncomendaDePlacas.java</file>
+            <file>file:/C:/Users/vconh/Documents/NetBeansProjects/ProjetoEncomendaDePlacas/src/projetoencomendadeplacas/DAOs/JPAControllers/ClienteJPAController.java</file>
         </group>
     </open-files>
 </project-private>

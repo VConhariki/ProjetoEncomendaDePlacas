@@ -6,13 +6,14 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="clienteScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.ClienteScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.ClienteScreenController">
    <children>
       <HBox layoutY="18.0" prefHeight="41.0" prefWidth="600.0">
          <children>
@@ -32,7 +33,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="clienteIdLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="260.0" text="1">
+                  <Label fx:id="clienteIdLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="260.0" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -46,7 +47,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ClientNomeTextfield" prefHeight="26.0" prefWidth="332.0" />
+                  <TextField fx:id="clienteNomeTextfield" prefHeight="26.0" prefWidth="332.0" />
                </children>
             </VBox>
             <VBox prefHeight="71.0" prefWidth="236.0">
@@ -56,7 +57,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ClientDocumentoTextfield" />
+                  <TextField fx:id="clienteDocumentoTextfield" />
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="286.0">
@@ -66,17 +67,29 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ClientTelefoneTextfield" />
+                  <TextField fx:id="clienteTelefoneTextfield" />
                </children>
             </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <HBox prefHeight="9.0" prefWidth="286.0">
                <children>
-                  <Button fx:id="ClienteGravarButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Gravar">
+                  <Label prefHeight="32.0" prefWidth="98.0" text="Cliente Novo?" textAlignment="CENTER" />
+                  <ToggleButton fx:id="novoClienteToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="190.0" selected="true" text="Novo" textAlignment="CENTER" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="286.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#gravar" prefHeight="26.0" prefWidth="138.0" text="Gravar">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="ClienteExcluirButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#excluir" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
@@ -84,11 +97,12 @@
             </HBox>
          </children>
       </VBox>
-      <TableView fx:id="ClienteTableView" layoutX="323.0" layoutY="73.0" prefHeight="319.0" prefWidth="368.0">
+      <TableView fx:id="clienteTableView" layoutX="323.0" layoutY="73.0" prefHeight="319.0" prefWidth="368.0">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="36.79998779296875" text="Id" />
-          <TableColumn fx:id="colNome" prefWidth="173.59994506835938" text="Nome" />
-            <TableColumn fx:id="colTelefone" prefWidth="156.800048828125" text="Telefone" />
+          <TableColumn fx:id="colId" prefWidth="25.60003662109375" text="Id" />
+          <TableColumn fx:id="colNome" prefWidth="112.7999267578125" text="Nome" />
+            <TableColumn fx:id="colDocumento" prefWidth="121.60000610351562" text="Documento" />
+            <TableColumn fx:id="colTelefone" prefWidth="108.0" text="Telefone" />
         </columns>
       </TableView>
    </children>

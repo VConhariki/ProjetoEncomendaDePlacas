@@ -18,18 +18,17 @@ public class ClienteDAO extends AbstractDAO<ClienteJPAController, Cliente>{
 
     @Override
     public void editar(Cliente objeto) throws Exception {
-//        objetoJPA.edit(objeto);
+        objetoJPA.edit(objeto);
     }
 
     @Override
     public void deletar(Cliente objeto) throws Exception {
-//        objetoJPA.destroy(objeto.getId());
+        objetoJPA.destroy(objeto.getId());
     }
 
     @Override
     public Cliente get(Cliente objeto) {
-//        return objetoJPA.findCliente(objeto.getId());
-        return new Cliente();
+        return objetoJPA.findCliente(objeto.getId());
     }
 
     @Override

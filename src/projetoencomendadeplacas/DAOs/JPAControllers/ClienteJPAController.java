@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import projetoencomendadeplacas.Entities.Cliente;
@@ -27,10 +28,54 @@ public class ClienteJPAController implements Serializable{
             em.persist(cliente);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (obterCliente(cliente.getId()) != null) {
+            if (findCliente(cliente.getId()) != null) {
                 throw new Exception("Cliente " + cliente + " already exists.", ex);
             }
             throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+        public void edit(Cliente cliente) throws EntityNotFoundException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            cliente = em.merge(cliente);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = cliente.getId();
+                if (findCliente(id) == null) {
+                    throw new EntityNotFoundException("The cliente with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+        
+    public void destroy(Integer id) throws EntityNotFoundException {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Cliente cliente;
+            try {
+                cliente = em.getReference(Cliente.class, id);
+                cliente.getId();
+            } catch (EntityNotFoundException enfe) {
+                throw new EntityNotFoundException("The cliente with id " + id + " no longer exists.\nTrace: " + enfe.getMessage());
+            }
+            em.remove(cliente);
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -62,7 +107,7 @@ public class ClienteJPAController implements Serializable{
         }
     }
     
-    private Cliente obterCliente(Integer id) {
+    public Cliente findCliente(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Cliente.class, id);
