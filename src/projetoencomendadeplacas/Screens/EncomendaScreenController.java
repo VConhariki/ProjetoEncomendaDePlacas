@@ -153,4 +153,8 @@ public class EncomendaScreenController implements Initializable {
         Double custoDesenho = encomenda.getFrase().length() * CUSTO_FRASE_BASE;
         return custoMaterial + custoDesenho;
     }
+    
+    private Double calcularValorSinal(Double custoPlaca){
+        return custoPlaca/2;
+    }
 }
