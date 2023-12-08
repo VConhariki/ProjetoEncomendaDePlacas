@@ -1,5 +1,8 @@
 package projetoencomendadeplacas.Screens;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -262,11 +265,56 @@ public class EncomendaScreenController implements Initializable {
             lista.add(encomendaSelecionada);
             montaTabela();
             limparTela();
+            gerarVias(encomendaSelecionada);
             Modal.displayMensagem("INFORMATION","Serviço concluído com sucesso!", "Sucesso!");
         }catch(Exception ex){
             ex.printStackTrace();
             Modal.displayMensagem("ERROR", "Ocorreu um erro ao finalizar entrega da placa!", "Atenção!");
         }
+    }
+    
+    private void gerarVias(Encomenda encomenda){
+        gerarViaCliente(encomenda);
+        gerarViaEmpresa(encomenda);
+    }
+    
+    private void gerarViaCliente(Encomenda encomenda){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(encomenda.getId() + "-ViaDoCliente.txt"))) {
+            writer.write("VIA DO CLIENTE: " + encomenda.getCpfcnpj());
+            writer.newLine();
+            writer.write("Altura Placa: " + encomenda.getAlturaplaca());
+            writer.newLine();
+            writer.write("Largura Placa: " + encomenda.getLarguraplaca());
+            writer.newLine();
+            writer.write("Valor: " + encomenda.getValorservico());
+            writer.newLine();
+            writer.write("Forma de Pagamento: " + encomenda.getFormaPagamentoDescricao());
+            writer.newLine();
+            writer.write("Data Entrega: " + encomenda.getDataFormatada());
 
+            System.out.println("Atributos escritos com sucesso em ViaDoCliente.txt");
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever os atributos em ViaDoCliente.txt: " + e.getMessage());
+        }
+    }
+    
+    private void gerarViaEmpresa(Encomenda encomenda){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(encomenda.getId() + "-ViaDaEmpresa.txt"))) {
+            writer.write("VIA DO CLIENTE: " + encomenda.getCpfcnpj());
+            writer.newLine();
+            writer.write("Altura Placa: " + encomenda.getAlturaplaca());
+            writer.newLine();
+            writer.write("Largura Placa: " + encomenda.getLarguraplaca());
+            writer.newLine();
+            writer.write("Valor: " + encomenda.getValorservico());
+            writer.newLine();
+            writer.write("Forma de Pagamento: " + encomenda.getFormaPagamentoDescricao());
+            writer.newLine();
+            writer.write("Data Entrega: " + encomenda.getDataFormatada());
+
+            System.out.println("Atributos escritos com sucesso em ViaDaEmpresa.txt");
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever os atributos em ViaDaEmpresa.txt: " + e.getMessage());
+        }
     }
 }

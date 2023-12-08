@@ -1,0 +1,6 @@
+VIA DO CLIENTE: 43380702854
+Altura Placa: 3.0
+Largura Placa: 1.0
+Valor: 442.0
+Forma de Pagamento: Dinheiro
+Data Entrega: 09/12/2023
