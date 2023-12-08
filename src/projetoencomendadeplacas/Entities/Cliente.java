@@ -32,6 +32,9 @@ import javax.persistence.Table;
     @NamedQuery(name = "Cliente.findByTelefone", query = "SELECT c FROM Cliente c WHERE c.telefone = :telefone")})
 public class Cliente implements Serializable {
 
+    @OneToMany(mappedBy = "cpfcnpj")
+    private Collection<Encomenda> encomendaCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcliente")
     private Collection<Clienteencomenda> clienteencomendaCollection;
 
@@ -112,7 +115,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "projetoencomendadeplacas.Entities.Cliente[ id=" + id + " ]";
+        return this.getCpfcnpj();
     }
 
     public Collection<Clienteencomenda> getClienteencomendaCollection() {
@@ -121,6 +124,14 @@ public class Cliente implements Serializable {
 
     public void setClienteencomendaCollection(Collection<Clienteencomenda> clienteencomendaCollection) {
         this.clienteencomendaCollection = clienteencomendaCollection;
+    }
+
+    public Collection<Encomenda> getEncomendaCollection() {
+        return encomendaCollection;
+    }
+
+    public void setEncomendaCollection(Collection<Encomenda> encomendaCollection) {
+        this.encomendaCollection = encomendaCollection;
     }
     
 }

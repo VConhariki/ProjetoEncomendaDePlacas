@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package projetoencomendadeplacas.Entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -14,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -46,6 +45,20 @@ import projetoencomendadeplacas.Utils.Enums.FormaPagamentoEnum;
     @NamedQuery(name = "Encomenda.findByPagamentopendente", query = "SELECT e FROM Encomenda e WHERE e.pagamentopendente = :pagamentopendente")})
 public class Encomenda implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "alturaplaca")
+    private Double alturaplaca;
+    @Basic(optional = false)
+    @Column(name = "larguraplaca")
+    private Double larguraplaca;
+    @Column(name = "valorservico")
+    private Double valorservico;
+    @Column(name = "valorsinal")
+    private Double valorsinal;
+    @JoinColumn(name = "cpfcnpj", referencedColumnName = "cpfcnpj")
+    @ManyToOne
+    private Cliente cpfcnpj;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idencomenda")
     private Collection<Clienteencomenda> clienteencomendaCollection;
 
@@ -55,12 +68,6 @@ public class Encomenda implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "alturaplaca")
-    private Double alturaplaca;
-    @Basic(optional = false)
-    @Column(name = "larguraplaca")
-    private Double larguraplaca;
     @Column(name = "frase")
     private String frase;
     @Basic(optional = false)
@@ -73,10 +80,6 @@ public class Encomenda implements Serializable {
     @Column(name = "dataentrega")
     @Temporal(TemporalType.DATE)
     private Date dataentrega;
-    @Column(name = "valorservico")
-    private Double valorservico;
-    @Column(name = "valorsinal")
-    private Double valorsinal;
     @Column(name = "formapagamento")
     private Integer formapagamento;
     @Column(name = "pagamentopendente")
@@ -88,6 +91,12 @@ public class Encomenda implements Serializable {
     private String corPlacaDescricao;
     @Transient
     private String formaPagamentoDescricao;
+    @Transient
+    private String dataFormatada;
+
+    public String getDataFormatada() {
+        return dataFormatada;
+    }
 
     public Encomenda() {
     }
@@ -125,21 +134,6 @@ public class Encomenda implements Serializable {
         this.id = id;
     }
 
-    public Double getAlturaplaca() {
-        return alturaplaca;
-    }
-
-    public void setAlturaplaca(Double alturaplaca) {
-        this.alturaplaca = alturaplaca;
-    }
-
-    public Double getLarguraplaca() {
-        return larguraplaca;
-    }
-
-    public void setLarguraplaca(Double larguraplaca) {
-        this.larguraplaca = larguraplaca;
-    }
 
     public String getFrase() {
         return frase;
@@ -173,21 +167,6 @@ public class Encomenda implements Serializable {
         this.dataentrega = dataentrega;
     }
 
-    public Double getValorservico() {
-        return valorservico;
-    }
-
-    public void setValorservico(Double valorservico) {
-        this.valorservico = valorservico;
-    }
-
-    public Double getValorsinal() {
-        return valorsinal;
-    }
-
-    public void setValorsinal(Double valorsinal) {
-        this.valorsinal = valorsinal;
-    }
 
     public Integer getFormapagamento() {
         return formapagamento;
@@ -235,9 +214,51 @@ public class Encomenda implements Serializable {
         this.clienteencomendaCollection = clienteencomendaCollection;
     }
     
-    public void setEnumsDescriptions(){
+    public void setTransientFields(){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         this.corFraseDescricao = CorFraseEnum.getDescricaoPelaPosicao(this.corfrase);
         this.corPlacaDescricao = CorPlacaEnum.getDescricaoPelaPosicao(this.corplaca);
         this.formaPagamentoDescricao = FormaPagamentoEnum.getDescricaoPelaPosicao(this.formapagamento);
+        this.dataFormatada = formato.format(this.dataentrega);
+    }
+
+    public Double getAlturaplaca() {
+        return alturaplaca;
+    }
+
+    public void setAlturaplaca(Double alturaplaca) {
+        this.alturaplaca = alturaplaca;
+    }
+
+    public Double getLarguraplaca() {
+        return larguraplaca;
+    }
+
+    public void setLarguraplaca(Double larguraplaca) {
+        this.larguraplaca = larguraplaca;
+    }
+
+    public Double getValorservico() {
+        return valorservico;
+    }
+
+    public void setValorservico(Double valorservico) {
+        this.valorservico = valorservico;
+    }
+
+    public Double getValorsinal() {
+        return valorsinal;
+    }
+
+    public void setValorsinal(Double valorsinal) {
+        this.valorsinal = valorsinal;
+    }
+
+    public Cliente getCpfcnpj() {
+        return cpfcnpj;
+    }
+
+    public void setCpfcnpj(Cliente cpfcnpj) {
+        this.cpfcnpj = cpfcnpj;
     }
 }

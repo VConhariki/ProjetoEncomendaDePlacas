@@ -1,14 +1,18 @@
 package projetoencomendadeplacas.Screens;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -16,7 +20,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import projetoencomendadeplacas.DAOs.ClienteDAO;
 import projetoencomendadeplacas.DAOs.EncomendaDAO;
+import projetoencomendadeplacas.Entities.Cliente;
 import projetoencomendadeplacas.Entities.Encomenda;
 import projetoencomendadeplacas.Utils.Enums.CorFraseEnum;
 import projetoencomendadeplacas.Utils.Enums.CorPlacaEnum;
@@ -28,8 +34,12 @@ public class EncomendaScreenController implements Initializable {
     ObservableList<Encomenda> lista;
     EncomendaDAO banco;
     Encomenda encomendaSelecionada;
+    ClienteDAO clienteDAO;
+    List<Cliente> listClientes;
     private static final Double CUSTO_MATERIAL_BASE = 147.30;
     private static final Double CUSTO_FRASE_BASE = 0.32;
+    private static final int LIMITE_DIARIO = 6;
+    
     @FXML
     private Label encomendasIdLabel;
     @FXML
@@ -61,7 +71,7 @@ public class EncomendaScreenController implements Initializable {
     @FXML
     private TableColumn<Encomenda, String> colCorFrase;   
     @FXML
-    private TableColumn<Encomenda, Date> colDataEntrega;
+    private TableColumn<Encomenda, String> colDataEntrega;
     @FXML
     private TableColumn<Encomenda, Double> colValorServico;
     @FXML
@@ -70,6 +80,12 @@ public class EncomendaScreenController implements Initializable {
     private TableColumn<Encomenda, String> colFormaPagamento;
     @FXML
     private TableColumn<Encomenda, Boolean> colPendente;
+    @FXML
+    private TextField cpfClienteTextfield;
+    @FXML
+    private TableColumn<Encomenda, String> colCliente;
+    @FXML
+    private Button concluirPagamentoButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,11 +96,14 @@ public class EncomendaScreenController implements Initializable {
         encomendaFormaPagamentoCombobox.getItems().addAll(FormaPagamentoEnum.values());
         encomendaFormaPagamentoCombobox.setValue(FormaPagamentoEnum.values()[0]);
         dataEntregaDatepicker.setValue(LocalDate.now());
+        concluirPagamentoButton.setDisable(true);
         
         try{
             banco = new EncomendaDAO();
+            clienteDAO = new ClienteDAO();
             encomendaSelecionada = new Encomenda();
             lista = FXCollections.observableArrayList(banco.getAll());
+            listClientes = clienteDAO.getAll();
             montaTabela();
         }catch(Exception ex){
             ex.printStackTrace();
@@ -96,10 +115,15 @@ public class EncomendaScreenController implements Initializable {
         try{
             String mensagemTipo = "Gravação";
             Encomenda novaEncomenda = montarEncomenda();
+            if(novaEncomenda == null)
+                return;
             System.out.println(novaEncomenda.toString());
             banco.inserir(novaEncomenda);
             lista.add(novaEncomenda);
+            montaTabela();
+            concluirPagamentoButton.setDisable(true);
             Modal.displayMensagem("INFORMATION", mensagemTipo + " realizada com sucesso", "Sucesso!");
+            limparTela();
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -107,54 +131,142 @@ public class EncomendaScreenController implements Initializable {
     
     private Encomenda montarEncomenda(){
         Encomenda novaEncomenda = new Encomenda();
+        Date dataEntrega = Date.from(dataEntregaDatepicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Boolean limiteAtingido = estaNoLimite(dataEntrega);
+        if(limiteAtingido)
+            return null;
+        Cliente cliente = obterCliente(cpfClienteTextfield.getText());
+        if(cliente == null)
+            return null;
+        
+        novaEncomenda.setCpfcnpj(cliente);
         novaEncomenda.setId(Integer.valueOf(encomendasIdLabel.getText()));
         novaEncomenda.setAlturaplaca(Double.valueOf(encomendaAlturaTextfield.getText()));
         novaEncomenda.setLarguraplaca(Double.valueOf(larguraEcomendaTextfield.getText()));
         novaEncomenda.setFrase(encomendaFraseTextfield.getText());
         novaEncomenda.setCorfrase(encomendaCorFraseCombobox.getValue().ordinal());
         novaEncomenda.setCorplaca(encomendaCorPlacaCombobox.getValue().ordinal());
-        novaEncomenda.setDataentrega(Date.from(dataEntregaDatepicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        novaEncomenda.setDataentrega(dataEntrega);
         novaEncomenda.setFormapagamento(encomendaFormaPagamentoCombobox.getValue().ordinal());
         novaEncomenda.setPagamentopendente(Boolean.TRUE);
-        novaEncomenda.setValorservico(Double.valueOf("2"));
-        novaEncomenda.setValorsinal(Double.valueOf("1"));
+        novaEncomenda.setValorservico(calcularValorServico(novaEncomenda));
+        novaEncomenda.setValorsinal(calcularValorSinal(novaEncomenda.getValorservico()));
         return novaEncomenda;
+    }
+    
+    private void mostrarEncomenda(Encomenda selectedItem) {
+        concluirPagamentoButton.setDisable(false);
+        encomendaSelecionada = selectedItem;
+        this.encomendasIdLabel.setText(String.valueOf(encomendaSelecionada.getId()));
+        this.encomendaAlturaTextfield.setText(encomendaSelecionada.getAlturaplaca().toString());
+        this.larguraEcomendaTextfield.setText(encomendaSelecionada.getLarguraplaca().toString());
+        this.encomendaFraseTextfield.setText(encomendaSelecionada.getFrase());
+        this.cpfClienteTextfield.setText(String.valueOf(encomendaSelecionada.getCpfcnpj().toString()));
+        this.encomendaCorPlacaCombobox.setValue(CorPlacaEnum.values()[encomendaSelecionada.getCorplaca()]);
+        this.encomendaCorFraseCombobox.setValue(CorFraseEnum.values()[encomendaSelecionada.getCorfrase()]);
+        this.encomendaFormaPagamentoCombobox.setValue(FormaPagamentoEnum.values()[encomendaSelecionada.getFormapagamento()]);
+        Instant instant = encomendaSelecionada.getDataentrega().toInstant();
+        this.dataEntregaDatepicker.setValue(instant.atZone(ZoneId.systemDefault()).toLocalDate());
     }
     
     private void montaTabela() {
         lista.forEach((e) -> {
-            e.setEnumsDescriptions();
+            e.setTransientFields();
         });
         
         encomendaTableview.setItems(lista);
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colCliente.setCellValueFactory(new PropertyValueFactory<>("cpfcnpj"));
         colAltura.setCellValueFactory(new PropertyValueFactory<>("alturaplaca"));
         colLargura.setCellValueFactory(new PropertyValueFactory<>("larguraplaca"));
         colFrase.setCellValueFactory(new PropertyValueFactory<>("frase"));
         colCorPlaca.setCellValueFactory(new PropertyValueFactory<>("corPlacaDescricao"));
         colCorFrase.setCellValueFactory(new PropertyValueFactory<>("corFraseDescricao"));
-        colDataEntrega.setCellValueFactory(new PropertyValueFactory<>("dataentrega"));
+        colDataEntrega.setCellValueFactory(new PropertyValueFactory<>("dataFormatada"));
         colValorServico.setCellValueFactory(new PropertyValueFactory<>("valorservico"));
         colValorSinal.setCellValueFactory(new PropertyValueFactory<>("valorsinal"));
         colFormaPagamento.setCellValueFactory(new PropertyValueFactory<>("formaPagamentoDescricao"));
         colPendente.setCellValueFactory(new PropertyValueFactory<>("pagamentopendente"));
-     
         
         encomendaTableview.getSelectionModel().selectedIndexProperty().addListener(
             evt -> {
-//                mostrarClientes(encomendaTableview.getSelectionModel().getSelectedItem());
+                mostrarEncomenda(encomendaTableview.getSelectionModel().getSelectedItem());
             }
         );
     }
     
-    private Double calcularValorPlaca(Encomenda encomenda){
+    private Double calcularValorServico(Encomenda encomenda){
         Double area = encomenda.getAlturaplaca() * encomenda.getLarguraplaca();
         Double custoMaterial = area * CUSTO_MATERIAL_BASE;
         Double custoDesenho = encomenda.getFrase().length() * CUSTO_FRASE_BASE;
-        return custoMaterial + custoDesenho;
+        Double valorTotal = custoMaterial + custoDesenho;
+        
+        Long finalValue = Math.round(valorTotal);
+        return finalValue.doubleValue();
     }
     
     private Double calcularValorSinal(Double custoPlaca){
         return custoPlaca/2;
+    }
+    
+    private Boolean estaNoLimite(Date dataAlvo){
+        int contadorCasos = 0;
+        for (Encomenda atual : lista) {
+            if (atual.getDataentrega().equals(dataAlvo)) {
+                contadorCasos++;
+            }
+            if (contadorCasos >= LIMITE_DIARIO) {
+                Modal.displayMensagem("ERROR", "Limite diário atingido! Selecione outra data.", "Atenção!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Cliente obterCliente(String cpf) {
+        try{
+            for(Cliente cliente : listClientes){
+                if(cliente.getCpfcnpj().equals(cpf))
+                    return cliente;
+            }
+            Modal.displayMensagem("ERROR", "Cliente não encontrado!", "Atenção!");
+            return null;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    private void limparTela() {
+        this.encomendasIdLabel.setText("0");
+        this.encomendaAlturaTextfield.clear();
+        this.larguraEcomendaTextfield.clear();
+        this.encomendaFraseTextfield.clear();
+        this.cpfClienteTextfield.clear();
+        this.encomendaCorPlacaCombobox.setValue(CorPlacaEnum.values()[0]);
+        this.encomendaCorFraseCombobox.setValue(CorFraseEnum.values()[0]);
+        this.encomendaFormaPagamentoCombobox.setValue(FormaPagamentoEnum.values()[0]);
+        this.dataEntregaDatepicker.setValue(LocalDate.now());
+    }
+
+    @FXML
+    private void concluirPagamento(ActionEvent event) throws Exception {
+        try{
+            if(!encomendaSelecionada.getPagamentopendente()){
+                Modal.displayMensagem("WARNING", "O cliente já efetuou o pagamento", "Atenção!");
+                return;
+            }
+            lista.remove(encomendaSelecionada);
+            encomendaSelecionada.setPagamentopendente(Boolean.FALSE);
+            banco.editar(encomendaSelecionada);
+            lista.add(encomendaSelecionada);
+            montaTabela();
+            limparTela();
+            Modal.displayMensagem("INFORMATION","Serviço concluído com sucesso!", "Sucesso!");
+        }catch(Exception ex){
+            ex.printStackTrace();
+            Modal.displayMensagem("ERROR", "Ocorreu um erro ao finalizar entrega da placa!", "Atenção!");
+        }
+
     }
 }

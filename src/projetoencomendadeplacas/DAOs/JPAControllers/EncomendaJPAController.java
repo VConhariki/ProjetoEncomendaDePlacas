@@ -38,7 +38,7 @@ public class EncomendaJPAController implements Serializable{
         }
     }
     
-        public void edit(Encomenda encomenda) throws EntityNotFoundException, Exception {
+    public void edit(Encomenda encomenda) throws EntityNotFoundException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();

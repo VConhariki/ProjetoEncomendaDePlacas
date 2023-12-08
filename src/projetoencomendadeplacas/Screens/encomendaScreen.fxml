@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.EncomendaScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="1285.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.EncomendaScreenController">
    <children>
       <HBox layoutY="18.0" prefHeight="41.0" prefWidth="600.0">
          <children>
@@ -25,7 +25,7 @@
             </Text>
          </children>
       </HBox>
-      <VBox layoutX="19.0" layoutY="73.0" prefHeight="179.0" prefWidth="286.0" spacing="5.0">
+      <VBox layoutX="19.0" layoutY="73.0" prefHeight="532.0" prefWidth="286.0" spacing="5.0">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -41,6 +41,16 @@
                   </Label>
                </children>
             </HBox>
+            <VBox layoutX="10.0" layoutY="167.0" prefHeight="50.0" prefWidth="286.0">
+               <children>
+                  <Label prefHeight="30.0" prefWidth="132.0" text="Cpf do Cliente">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField id="ClientTelefoneTextfield" fx:id="cpfClienteTextfield" />
+               </children>
+            </VBox>
             <VBox layoutX="10.0" layoutY="10.0" prefHeight="70.0" prefWidth="107.0">
                <children>
                   <Label prefHeight="30.0" prefWidth="63.0" text="Altura">
@@ -109,36 +119,38 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="encomendaFormaPagamentoCombobox" prefHeight="26.0" prefWidth="285.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Button id="ClienteGravarButton" mnemonicParsing="false" onAction="#gravar" prefHeight="26.0" prefWidth="138.0" text="Gravar">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                        <Button id="ClienteExcluirButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
             </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-               <children>
-                  <Button id="ClienteGravarButton" mnemonicParsing="false" onAction="#gravar" prefHeight="26.0" prefWidth="138.0" text="Gravar">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-                  <Button id="ClienteExcluirButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
-               </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </HBox>
+            <Button id="ClienteGravarButton" fx:id="concluirPagamentoButton" mnemonicParsing="false" onAction="#concluirPagamento" prefHeight="26.0" prefWidth="286.0" text="Concluir Pagamento" />
          </children>
       </VBox>
-      <TableView id="ClienteTableView" fx:id="encomendaTableview" layoutX="324.0" layoutY="73.0" prefHeight="532.0" prefWidth="891.0">
+      <TableView id="ClienteTableView" fx:id="encomendaTableview" layoutX="324.0" layoutY="73.0" prefHeight="593.0" prefWidth="961.0">
          <columns>
             <TableColumn fx:id="colId" prefWidth="37.5999755859375" text="Id" />
-            <TableColumn fx:id="colAltura" prefWidth="40.0" text="Altura" />
-            <TableColumn fx:id="colLargura" prefWidth="51.20001220703125" text="Largura" />
-            <TableColumn fx:id="colFrase" prefWidth="111.20001220703125" text="Frase" />
+            <TableColumn fx:id="colCliente" prefWidth="72.80001831054688" text="Cliente" />
+            <TableColumn fx:id="colAltura" prefWidth="51.199981689453125" text="Altura" />
+            <TableColumn fx:id="colLargura" prefWidth="52.79998779296875" text="Largura" />
+            <TableColumn fx:id="colFrase" prefWidth="88.79998779296875" text="Frase" />
             <TableColumn fx:id="colCorPlaca" prefWidth="100.79998779296875" text="Cor da Placa" />
             <TableColumn fx:id="colCorFrase" prefWidth="86.39996337890625" text="Cor da Frase" />
             <TableColumn fx:id="colDataEntrega" prefWidth="93.60003662109375" text="Data Entrega" />
             <TableColumn fx:id="colValorServico" prefWidth="99.20001220703125" text="Valor Serviço" />
             <TableColumn fx:id="colValorSinal" prefWidth="82.4000244140625" text="Valor Sinal" />
-            <TableColumn fx:id="colFormaPagamento" prefWidth="119.199951171875" text="Forma Pagamento" />
-            <TableColumn fx:id="colPendente" prefWidth="64.0" text="Pendente?" />
+            <TableColumn fx:id="colFormaPagamento" prefWidth="122.4000244140625" text="Forma Pagamento" />
+            <TableColumn fx:id="colPendente" prefWidth="69.5999755859375" text="Pendente?" />
          </columns>
       </TableView>
    </children>
