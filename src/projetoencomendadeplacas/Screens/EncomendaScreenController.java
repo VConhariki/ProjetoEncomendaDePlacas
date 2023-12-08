@@ -28,7 +28,8 @@ public class EncomendaScreenController implements Initializable {
     ObservableList<Encomenda> lista;
     EncomendaDAO banco;
     Encomenda encomendaSelecionada;
-    
+    private static final Double CUSTO_MATERIAL_BASE = 147.30;
+    private static final Double CUSTO_FRASE_BASE = 0.32;
     @FXML
     private Label encomendasIdLabel;
     @FXML
@@ -144,5 +145,12 @@ public class EncomendaScreenController implements Initializable {
 //                mostrarClientes(encomendaTableview.getSelectionModel().getSelectedItem());
             }
         );
+    }
+    
+    private Double calcularValorPlaca(Encomenda encomenda){
+        Double area = encomenda.getAlturaplaca() * encomenda.getLarguraplaca();
+        Double custoMaterial = area * CUSTO_MATERIAL_BASE;
+        Double custoDesenho = encomenda.getFrase().length() * CUSTO_FRASE_BASE;
+        return custoMaterial + custoDesenho;
     }
 }
