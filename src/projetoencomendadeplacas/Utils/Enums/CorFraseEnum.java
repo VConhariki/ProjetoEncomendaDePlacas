@@ -12,9 +12,13 @@ public enum CorFraseEnum {
     CorFraseEnum(String descricao) {
         this.descricao = descricao;
     }
-
+    
     public String getDescricao() {
         return descricao;
+    }
+    
+    public static String getDescricaoPelaPosicao(int posicao) {
+        return values()[posicao].getDescricao();
     }
 }
 

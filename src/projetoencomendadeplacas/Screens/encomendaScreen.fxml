@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="encomendaScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="914.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.EncomendaScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetoencomendadeplacas.Screens.EncomendaScreenController">
    <children>
       <HBox layoutY="18.0" prefHeight="41.0" prefWidth="600.0">
          <children>
@@ -58,7 +58,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="ClientDocumentoTextfield" fx:id="larguraAlturaTextfield" />
+                  <TextField id="ClientDocumentoTextfield" fx:id="larguraEcomendaTextfield" />
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="286.0">
@@ -113,12 +113,12 @@
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button id="ClienteGravarButton" fx:id="encomendaGravarButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Gravar">
+                  <Button id="ClienteGravarButton" mnemonicParsing="false" onAction="#gravar" prefHeight="26.0" prefWidth="138.0" text="Gravar">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button id="ClienteExcluirButton" fx:id="encomendaExcluirButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
+                  <Button id="ClienteExcluirButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Excluir" />
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
@@ -126,13 +126,19 @@
             </HBox>
          </children>
       </VBox>
-      <TableView id="ClienteTableView" fx:id="encomendaTableview" layoutX="323.0" layoutY="73.0" prefHeight="532.0" prefWidth="579.0">
+      <TableView id="ClienteTableView" fx:id="encomendaTableview" layoutX="324.0" layoutY="73.0" prefHeight="532.0" prefWidth="891.0">
          <columns>
-            <TableColumn prefWidth="37.5999755859375" text="Id" />
-            <TableColumn prefWidth="114.4000244140625" text="Cliente" />
-            <TableColumn prefWidth="136.79995727539062" text="Valor Serviço" />
-            <TableColumn prefWidth="138.39996337890625" text="Valor Sinal" />
-            <TableColumn prefWidth="150.4000244140625" text="Pagamento Pendente" />
+            <TableColumn fx:id="colId" prefWidth="37.5999755859375" text="Id" />
+            <TableColumn fx:id="colAltura" prefWidth="40.0" text="Altura" />
+            <TableColumn fx:id="colLargura" prefWidth="51.20001220703125" text="Largura" />
+            <TableColumn fx:id="colFrase" prefWidth="111.20001220703125" text="Frase" />
+            <TableColumn fx:id="colCorPlaca" prefWidth="100.79998779296875" text="Cor da Placa" />
+            <TableColumn fx:id="colCorFrase" prefWidth="86.39996337890625" text="Cor da Frase" />
+            <TableColumn fx:id="colDataEntrega" prefWidth="93.60003662109375" text="Data Entrega" />
+            <TableColumn fx:id="colValorServico" prefWidth="99.20001220703125" text="Valor Serviço" />
+            <TableColumn fx:id="colValorSinal" prefWidth="82.4000244140625" text="Valor Sinal" />
+            <TableColumn fx:id="colFormaPagamento" prefWidth="119.199951171875" text="Forma Pagamento" />
+            <TableColumn fx:id="colPendente" prefWidth="64.0" text="Pendente?" />
          </columns>
       </TableView>
    </children>

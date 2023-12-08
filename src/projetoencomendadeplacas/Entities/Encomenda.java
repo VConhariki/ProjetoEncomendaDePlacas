@@ -5,7 +5,6 @@
 package projetoencomendadeplacas.Entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +20,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import projetoencomendadeplacas.Utils.Enums.CorFraseEnum;
+import projetoencomendadeplacas.Utils.Enums.CorPlacaEnum;
+import projetoencomendadeplacas.Utils.Enums.FormaPagamentoEnum;
 
 /**
  *
@@ -54,10 +57,10 @@ public class Encomenda implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @Column(name = "alturaplaca")
-    private BigInteger alturaplaca;
+    private Double alturaplaca;
     @Basic(optional = false)
     @Column(name = "larguraplaca")
-    private BigInteger larguraplaca;
+    private Double larguraplaca;
     @Column(name = "frase")
     private String frase;
     @Basic(optional = false)
@@ -71,13 +74,20 @@ public class Encomenda implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataentrega;
     @Column(name = "valorservico")
-    private BigInteger valorservico;
+    private Double valorservico;
     @Column(name = "valorsinal")
-    private BigInteger valorsinal;
+    private Double valorsinal;
     @Column(name = "formapagamento")
     private Integer formapagamento;
     @Column(name = "pagamentopendente")
     private Boolean pagamentopendente;
+    
+    @Transient
+    private String corFraseDescricao;
+    @Transient
+    private String corPlacaDescricao;
+    @Transient
+    private String formaPagamentoDescricao;
 
     public Encomenda() {
     }
@@ -86,13 +96,25 @@ public class Encomenda implements Serializable {
         this.id = id;
     }
 
-    public Encomenda(Integer id, BigInteger alturaplaca, BigInteger larguraplaca, int corplaca, int corfrase, Date dataentrega) {
+    public Encomenda(Integer id, Double alturaplaca, Double larguraplaca, int corplaca, int corfrase, Date dataentrega) {
         this.id = id;
         this.alturaplaca = alturaplaca;
         this.larguraplaca = larguraplaca;
         this.corplaca = corplaca;
         this.corfrase = corfrase;
         this.dataentrega = dataentrega;
+    }
+
+    public String getCorFraseDescricao() {
+        return corFraseDescricao;
+    }
+
+    public String getCorPlacaDescricao() {
+        return corPlacaDescricao;
+    }
+
+    public String getFormaPagamentoDescricao() {
+        return formaPagamentoDescricao;
     }
 
     public Integer getId() {
@@ -103,19 +125,19 @@ public class Encomenda implements Serializable {
         this.id = id;
     }
 
-    public BigInteger getAlturaplaca() {
+    public Double getAlturaplaca() {
         return alturaplaca;
     }
 
-    public void setAlturaplaca(BigInteger alturaplaca) {
+    public void setAlturaplaca(Double alturaplaca) {
         this.alturaplaca = alturaplaca;
     }
 
-    public BigInteger getLarguraplaca() {
+    public Double getLarguraplaca() {
         return larguraplaca;
     }
 
-    public void setLarguraplaca(BigInteger larguraplaca) {
+    public void setLarguraplaca(Double larguraplaca) {
         this.larguraplaca = larguraplaca;
     }
 
@@ -151,19 +173,19 @@ public class Encomenda implements Serializable {
         this.dataentrega = dataentrega;
     }
 
-    public BigInteger getValorservico() {
+    public Double getValorservico() {
         return valorservico;
     }
 
-    public void setValorservico(BigInteger valorservico) {
+    public void setValorservico(Double valorservico) {
         this.valorservico = valorservico;
     }
 
-    public BigInteger getValorsinal() {
+    public Double getValorsinal() {
         return valorsinal;
     }
 
-    public void setValorsinal(BigInteger valorsinal) {
+    public void setValorsinal(Double valorsinal) {
         this.valorsinal = valorsinal;
     }
 
@@ -213,4 +235,9 @@ public class Encomenda implements Serializable {
         this.clienteencomendaCollection = clienteencomendaCollection;
     }
     
+    public void setEnumsDescriptions(){
+        this.corFraseDescricao = CorFraseEnum.getDescricaoPelaPosicao(this.corfrase);
+        this.corPlacaDescricao = CorPlacaEnum.getDescricaoPelaPosicao(this.corplaca);
+        this.formaPagamentoDescricao = FormaPagamentoEnum.getDescricaoPelaPosicao(this.formapagamento);
+    }
 }

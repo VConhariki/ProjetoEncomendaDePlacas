@@ -13,4 +13,8 @@ public enum CorPlacaEnum {
     public String getDescricao() {
         return descricao;
     }
+    
+    public static String getDescricaoPelaPosicao(int posicao) {
+        return values()[posicao].getDescricao();
+    }
 }
